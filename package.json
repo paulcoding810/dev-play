@@ -3,7 +3,7 @@
   "displayName": "Dev Play",
   "version": "1.0.0",
   "author": "paulcoding",
-  "description": "Utilities for quick development and testing",
+  "description": "Developer tools extension with encoders, formatters, and converters",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -11,7 +11,7 @@
     "firefox-extension",
     "react",
     "vite",
-    "create-chrome-ext"
+    "gen-ext"
   ],
   "engines": {
     "node": ">=14.18.0"
