@@ -1,5 +1,12 @@
 import { categories } from '../data/categories'
 
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason !== 'install') {
+    return
+  }
+  chrome.runtime.openOptionsPage()
+})
+
 chrome.action.onClicked.addListener(() => {
   chrome.runtime.openOptionsPage()
 })
