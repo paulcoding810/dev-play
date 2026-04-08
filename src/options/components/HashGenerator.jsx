@@ -9,6 +9,8 @@ const HashGenerator = () => {
     if (saved) setInput(saved)
   }, [])
 
+  const handleFocus = (e) => e.target.select()
+
   useEffect(() => {
     localStorage.setItem('hash-input', input)
   }, [input])
@@ -54,12 +56,14 @@ const HashGenerator = () => {
   return (
     <div className="space-y-6">
       <div className="card">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Hash Generator</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Hash Generator</h2>
         <div className="space-y-2">
           <label className="label">Enter text</label>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onFocus={handleFocus}
+            autoFocus
             placeholder="Enter text to hash..."
             rows={4}
             className="input-field"

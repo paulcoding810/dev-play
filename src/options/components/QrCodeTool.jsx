@@ -13,6 +13,8 @@ const QrCodeTool = () => {
     if (saved) setInput(saved)
   }, [])
 
+  const handleFocus = (e) => e.target.select()
+
   useEffect(() => {
     localStorage.setItem('qrcode-input', input)
   }, [input])
@@ -48,7 +50,7 @@ const QrCodeTool = () => {
   return (
     <div className="space-y-6">
       <div className="card">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">
           QR Code Generator
         </h2>
         <div className="space-y-4">
@@ -57,6 +59,8 @@ const QrCodeTool = () => {
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onFocus={handleFocus}
+              autoFocus
               placeholder="https://example.com"
               rows={3}
               className="input-field"
@@ -67,7 +71,7 @@ const QrCodeTool = () => {
             <select
               value={size}
               onChange={(e) => setSize(Number(e.target.value))}
-              className="input-field w-auto"
+              className="input-field w-auto appearance-none bg-none"
             >
               <option value={128}>128 x 128</option>
               <option value={256}>256 x 256</option>
@@ -79,22 +83,22 @@ const QrCodeTool = () => {
       </div>
 
       <div className="card">
-        <div className="flex items-center justify-between mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">Generated QR Code</h3>
           <button
             onClick={downloadQR}
             disabled={!qrDataUrl}
             className="btn flex items-center gap-2 disabled:opacity-50"
           >
-            <Download className="w-4 h-4" />
+            <Download className="h-4 w-4" />
             Download PNG
           </button>
         </div>
-        <div className="flex justify-center p-6 bg-white rounded-xl">
+        <div className="flex justify-center rounded-xl bg-white p-6">
           {qrDataUrl ? (
             <img src={qrDataUrl} alt="QR Code" className="max-w-full" />
           ) : (
-            <div className="w-64 h-64 flex items-center justify-center text-gray-400">
+            <div className="flex h-64 w-64 items-center justify-center text-gray-400">
               Enter text to generate QR code
             </div>
           )}

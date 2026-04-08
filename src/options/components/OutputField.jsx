@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Copy, Check } from 'lucide-react'
+import { Check, Copy } from 'lucide-react'
+import { useState } from 'react'
 
 const OutputField = ({ label, value, isError = false }) => {
   const [copied, setCopied] = useState(false)
@@ -19,9 +19,9 @@ const OutputField = ({ label, value, isError = false }) => {
         <button
           onClick={handleCopy}
           disabled={!value}
-          className="flex items-center gap-1 px-2 py-1 text-xs text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded transition-all disabled:opacity-50"
+          className="flex items-center gap-1 rounded px-2 py-1 text-xs text-purple-600 transition-all hover:bg-purple-50 disabled:opacity-50 dark:text-purple-400 dark:hover:bg-purple-900/20"
         >
-          {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
           {copied ? 'Copied' : 'Copy'}
         </button>
       </div>

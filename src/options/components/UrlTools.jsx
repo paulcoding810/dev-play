@@ -9,6 +9,8 @@ const UrlTools = () => {
     if (saved) setInput(saved)
   }, [])
 
+  const handleFocus = (e) => e.target.select()
+
   useEffect(() => {
     localStorage.setItem('url-tools-input', input)
   }, [input])
@@ -41,13 +43,15 @@ const UrlTools = () => {
   return (
     <div className="space-y-6">
       <div className="card">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">URL Tools</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">URL Tools</h2>
         <div className="space-y-2">
           <label className="label">Enter URL or text</label>
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onFocus={handleFocus}
+            autoFocus
             placeholder="https://example.com?foo=bar baz"
             className="input-field"
           />

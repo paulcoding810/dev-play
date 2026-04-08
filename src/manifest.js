@@ -1,5 +1,5 @@
 import { defineManifest } from '@crxjs/vite-plugin'
-import packageData from '../package.json' assert { type: 'json' }
+import packageData from '../package.json' with { type: 'json' }
 
 const isDev = process.env.NODE_ENV == 'development'
 
@@ -14,6 +14,7 @@ export default defineManifest({
     48: 'img/logo-48.png',
     128: 'img/logo-128.png',
   },
+  omnibox: { keyword: 'dp' },
   options_page: 'options.html',
   background: {
     service_worker: 'src/background/index.js',

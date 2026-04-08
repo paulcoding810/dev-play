@@ -9,6 +9,8 @@ const ColorTools = () => {
     if (saved) setInput(saved)
   }, [])
 
+  const handleFocus = (e) => e.target.select()
+
   useEffect(() => {
     localStorage.setItem('color-input', input)
   }, [input])
@@ -120,7 +122,7 @@ const ColorTools = () => {
   return (
     <div className="space-y-6">
       <div className="card">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Color Tools</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Color Tools</h2>
         <div className="space-y-4">
           <div>
             <label className="label">Enter HEX, RGB, or HSL color</label>
@@ -128,14 +130,16 @@ const ColorTools = () => {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onFocus={handleFocus}
+              autoFocus
               placeholder="#FF5733 or rgb(255, 87, 51) or hsl(11, 100%, 60%)"
               className="input-field"
             />
           </div>
           {color && color.valid && (
-            <div className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+            <div className="flex items-center gap-4 rounded-xl bg-gray-50 p-4 dark:bg-gray-800/50">
               <div
-                className="w-20 h-20 rounded-lg shadow-inner border border-gray-200 dark:border-gray-700"
+                className="h-20 w-20 rounded-lg border border-gray-200 shadow-inner dark:border-gray-700"
                 style={{ backgroundColor: toHex }}
               />
               <div>

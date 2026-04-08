@@ -29,7 +29,6 @@ $ yarn dev
 2. Open Firefox and go to `about:debugging#/runtime/this-firefox`
 3. Click on 'Load Temporary Add-on' and select `dev-play/build` folder
 
-
 ## Packing
 
 After the development of your extension run the command

@@ -9,6 +9,8 @@ const TextTools = () => {
     if (saved) setInput(saved)
   }, [])
 
+  const handleFocus = (e) => e.target.select()
+
   useEffect(() => {
     localStorage.setItem('text-input', input)
   }, [input])
@@ -27,12 +29,14 @@ const TextTools = () => {
   return (
     <div className="space-y-6">
       <div className="card">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Text Tools</h2>
+        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Text Tools</h2>
         <div className="space-y-2">
           <label className="label">Enter text</label>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onFocus={handleFocus}
+            autoFocus
             placeholder="Enter your text here..."
             rows={5}
             className="input-field"
@@ -52,11 +56,11 @@ const TextTools = () => {
       <div className="card space-y-4">
         <h3 className="text-lg font-medium text-gray-900 dark:text-white">Statistics</h3>
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+          <div className="rounded-xl bg-gray-50 p-4 dark:bg-gray-800/50">
             <p className="text-sm text-gray-500 dark:text-gray-400">Characters</p>
             <p className="text-2xl font-semibold text-gray-900 dark:text-white">{charCount}</p>
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+          <div className="rounded-xl bg-gray-50 p-4 dark:bg-gray-800/50">
             <p className="text-sm text-gray-500 dark:text-gray-400">Words</p>
             <p className="text-2xl font-semibold text-gray-900 dark:text-white">{wordCount}</p>
           </div>
