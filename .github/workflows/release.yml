@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    if: startsWith(github.ref, 'refs/tags/v')  
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,7 +17,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - uses: actions/setup-node@v3
         with:
-          node-version: '21'
+          node-version: '22'
       - name: install dependency
         run: yarn
       - name: Create chrome artifacts
@@ -38,4 +38,3 @@ jobs:
           files: ./package/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
