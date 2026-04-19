@@ -43,6 +43,7 @@ DevPlay
 | QR Code   | Generate QR codes        |
 | Base64    | Encode/decode            |
 | JSON      | Format & validate        |
+| Mermaid   | Diagram and chart        |
 | Text      | Text transformations     |
 | Hash      | Generate MD5, SHA hashes |
 | Timestamp | Convert timestamps       |
