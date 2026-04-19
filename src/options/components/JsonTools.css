@@ -1,0 +1,61 @@
+@tailwind components;
+
+/* https://github.com/unfoldadmin/django-unfold/blob/86400c3b7d7c5ba819f8e98260569d42a6221481/src/unfold/styles.css#L846 */
+
+@layer components {
+  .jsoneditor {
+    @apply overflow-hidden rounded-lg border !border-gray-200 shadow-sm dark:!border-gray-700;
+  }
+
+  .jsoneditor .jsoneditor-contextmenu-button {
+    @apply !hidden;
+  }
+
+  .jsoneditor .jsoneditor-treepath > .jsoneditor-treepath-element:first-child,
+  .jsoneditor .jsoneditor-treepath > .jsoneditor-treepath-seperator:first-child {
+    @apply !hidden;
+  }
+
+  .jsoneditor .jsoneditor-field {
+    @apply !border-none !text-sm hover:!bg-purple-100 dark:bg-transparent dark:hover:!bg-purple-800;
+  }
+
+  .jsoneditor .jsoneditor-value {
+    @apply !border-none hover:!bg-purple-100 dark:hover:!bg-purple-800;
+  }
+
+  .jsoneditor .jsoneditor-value.jsoneditor-string,
+  .jsoneditor .ace_string {
+    @apply !text-green-600 dark:text-green-500;
+  }
+
+  .jsoneditor .jsoneditor-value.jsoneditor-number,
+  .jsoneditor .ace_numeric {
+    @apply text-blue-600 dark:text-blue-500;
+  }
+
+  .jsoneditor .jsoneditor-value.jsoneditor-boolean,
+  .jsoneditor .ace_boolean {
+    @apply text-red-600 dark:text-red-500;
+  }
+
+  .jsoneditor .jsoneditor-menu a.jsoneditor-poweredBy {
+    @apply opacity-0;
+  }
+
+  .jsoneditor .jsoneditor-menu {
+    @apply !border-gray-100 !bg-purple-600 dark:!border-purple-700 dark:!bg-purple-800;
+  }
+
+  .jsoneditor .jsoneditor-menu > button {
+    @apply cursor-pointer rounded-lg !border !border-purple-200 !shadow-sm dark:!border-purple-700;
+  }
+
+  .jsoneditor .jsoneditor-menu > button:after {
+    @apply text-[16px];
+  }
+
+  .jsoneditor input[type='text'] {
+    @apply h-[22px] !border-none !bg-transparent text-xs;
+  }
+}

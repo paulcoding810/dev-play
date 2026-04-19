@@ -10,8 +10,6 @@ import TextTools from './components/TextTools'
 import TimestampTools from './components/TimestampTools'
 import UrlTools from './components/UrlTools'
 
-import './index.css'
-
 const components = {
   url: { component: UrlTools, icon: Link },
   qrcode: { component: QrCodeTool, icon: QrCode },
@@ -107,7 +105,9 @@ export const Options = () => {
       </aside>
 
       <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-4xl p-8">{ActiveComponent && <ActiveComponent />}</div>
+        <div className={`mx-auto p-8 ${activeCategory === 'json' ? 'h-full w-full' : 'max-w-4xl'}`}>
+          {ActiveComponent && <ActiveComponent />}
+        </div>
       </main>
     </div>
   )

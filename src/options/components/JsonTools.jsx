@@ -1,79 +1,71 @@
-import { useState, useEffect } from 'react'
-import OutputField from './OutputField'
+import JSONEditor from 'jsoneditor'
+import 'jsoneditor/dist/jsoneditor.css'
+import { useEffect, useRef, useState } from 'react'
+import './JsonTools.css'
 
 const JsonTools = () => {
-  const [input, setInput] = useState('')
-  const [isValid, setIsValid] = useState(true)
-  const [error, setError] = useState('')
-  const [prettyOutput, setPrettyOutput] = useState('')
-  const [minifiedOutput, setMinifiedOutput] = useState('')
+  const [json, setJson] = useState(null)
+  const codeRef = useRef(null)
+  const treeRef = useRef(null)
 
   useEffect(() => {
-    const saved = localStorage.getItem('json-input')
-    if (saved) setInput(saved)
+    if (!codeRef.current) return
+
+    let savedJson = {}
+    try {
+      const saved = localStorage.getItem('json-input')
+      if (saved) savedJson = JSON.parse(saved)
+    } catch {
+      savedJson = {}
+    }
+    setJson(savedJson)
+
+    codeRef.current.innerHTML = ''
+    new JSONEditor(codeRef.current, {
+      mode: 'code',
+      mainMenuBar: true,
+      navigationBar: true,
+      onChangeText: (jsonString) => {
+        try {
+          setJson(JSON.parse(jsonString))
+        } catch {
+          // silently ignore while typing
+        }
+      },
+    }).set(savedJson)
   }, [])
 
-  const handleFocus = (e) => e.target.select()
+  useEffect(() => {
+    if (!treeRef.current || !json) return
+
+    localStorage.setItem('json-input', JSON.stringify(json))
+    treeRef.current.innerHTML = ''
+    new JSONEditor(treeRef.current, {
+      mode: 'tree',
+      mainMenuBar: true,
+      navigationBar: true,
+      onEditable: () => false,
+      onCreateMenu: () => [],
+    }).set(json)
+  }, [json])
 
   useEffect(() => {
-    localStorage.setItem('json-input', input)
-  }, [input])
-
-  const validateJson = (str) => {
-    try {
-      JSON.parse(str)
-      setIsValid(true)
-      setError('')
-      return true
-    } catch (e) {
-      setIsValid(false)
-      setError(e.message)
-      return false
-    }
-  }
-
-  useEffect(() => {
-    if (input.trim()) {
-      if (validateJson(input)) {
-        setPrettyOutput(JSON.stringify(JSON.parse(input), null, 2))
-        setMinifiedOutput(JSON.stringify(JSON.parse(input)))
-      } else {
-        setPrettyOutput('')
-        setMinifiedOutput('')
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+        e.preventDefault()
+        document.querySelector('.jsoneditor-search input')?.focus()
       }
-    } else {
-      setIsValid(true)
-      setError('')
-      setPrettyOutput('')
-      setMinifiedOutput('')
     }
-  }, [input])
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
-    <div className="space-y-6">
-      <div className="card">
-        <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">JSON Tools</h2>
-        <div className="space-y-2">
-          <label className="label">Enter JSON</label>
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onFocus={handleFocus}
-            autoFocus
-            placeholder='{"key": "value"}'
-            rows={8}
-            className={`input-field font-mono ${!isValid && input ? 'border-red-500 dark:border-red-500' : ''}`}
-          />
-          {!isValid && input && (
-            <p className="mt-2 text-sm text-red-500 dark:text-red-400">Invalid JSON: {error}</p>
-          )}
-        </div>
-      </div>
-
-      <div className="card space-y-4">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">Output</h3>
-        <OutputField label="Pretty (formatted)" value={prettyOutput} />
-        <OutputField label="Minified" value={minifiedOutput} />
+    <div className="flex h-full flex-col space-y-4">
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-white">JSON Tools</h2>
+      <div className="flex h-[90%] flex-1 gap-4">
+        <div className="w-2/5 flex-1" ref={codeRef} />
+        <div className="w-3/5 flex-1" ref={treeRef} />
       </div>
     </div>
   )

@@ -26,6 +26,7 @@
     "zip:firefox": "export BROWSER=firefox && yarn build && node src/zip.js"
   },
   "dependencies": {
+    "jsoneditor": "^10.4.3",
     "lucide-react": "^1.7.0",
     "qrcode": "^1.5.4",
     "react": "^18.2.0",
