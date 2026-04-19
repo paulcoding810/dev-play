@@ -26,6 +26,9 @@
     "zip:firefox": "export BROWSER=firefox && yarn build && node src/zip.js"
   },
   "dependencies": {
+    "@codemirror/language": "^6.12.3",
+    "@uiw/react-codemirror": "^4.25.9",
+    "codemirror-lang-mermaid": "^0.5.0",
     "jsoneditor": "^10.4.3",
     "lucide-react": "^1.7.0",
     "mermaid": "^11.14.0",

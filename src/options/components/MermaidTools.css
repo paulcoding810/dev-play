@@ -8,4 +8,12 @@
   .mermaid-render svg {
     @apply h-auto max-w-full;
   }
+
+  .cm-editor {
+    @apply h-full;
+  }
+
+  .cm-scroller {
+    @apply overflow-auto;
+  }
 }

@@ -1,7 +1,123 @@
+import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
+import CodeMirror from '@uiw/react-codemirror'
+import {
+  mermaid as codemirrorMermaid,
+  flowchartTags,
+  ganttTags,
+  journeyTags,
+  mindmapTags,
+  pieTags,
+  requirementTags,
+  sequenceTags,
+} from 'codemirror-lang-mermaid'
 import { Download } from 'lucide-react'
 import mermaid from 'mermaid'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import './MermaidTools.css'
+
+const lightHighlightStyle = HighlightStyle.define([
+  { tag: flowchartTags.diagramName, color: '#9333ea', fontWeight: 'bold' },
+  { tag: flowchartTags.nodeId, color: '#1f2937', fontWeight: '500' },
+  { tag: flowchartTags.nodeText, color: '#374151' },
+  { tag: flowchartTags.nodeEdge, color: '#6b7280' },
+  { tag: flowchartTags.nodeEdgeText, color: '#059669' },
+  { tag: flowchartTags.keyword, color: '#dc2626' },
+  { tag: flowchartTags.orientation, color: '#7c3aed' },
+  { tag: flowchartTags.string, color: '#059669' },
+  { tag: flowchartTags.number, color: '#2563eb' },
+  { tag: flowchartTags.lineComment, color: '#9ca3af', fontStyle: 'italic' },
+  { tag: mindmapTags.diagramName, color: '#9333ea', fontWeight: 'bold' },
+  { tag: mindmapTags.lineText1, color: '#ce9178' },
+  { tag: mindmapTags.lineText2, color: '#059669' },
+  { tag: mindmapTags.lineText3, color: '#dc2626' },
+  { tag: mindmapTags.lineText4, color: '#7c3aed' },
+  { tag: mindmapTags.lineText5, color: '#2563eb' },
+  { tag: pieTags.diagramName, color: '#9333ea', fontWeight: 'bold' },
+  { tag: pieTags.title, color: '#1f2937', fontWeight: 'bold' },
+  { tag: pieTags.titleText, color: '#374151' },
+  { tag: pieTags.string, color: '#059669' },
+  { tag: pieTags.number, color: '#2563eb' },
+  { tag: pieTags.showData, color: '#7c3aed' },
+  { tag: pieTags.lineComment, color: '#9ca3af', fontStyle: 'italic' },
+  { tag: ganttTags.diagramName, color: '#9333ea', fontWeight: 'bold' },
+  { tag: ganttTags.keyword, color: '#dc2626' },
+  { tag: ganttTags.string, color: '#059669' },
+  { tag: ganttTags.lineComment, color: '#9ca3af', fontStyle: 'italic' },
+  { tag: sequenceTags.diagramName, color: '#9333ea', fontWeight: 'bold' },
+  { tag: sequenceTags.arrow, color: '#6b7280' },
+  { tag: sequenceTags.keyword1, color: '#dc2626' },
+  { tag: sequenceTags.keyword2, color: '#7c3aed' },
+  { tag: sequenceTags.nodeText, color: '#1f2937', fontWeight: '500' },
+  { tag: sequenceTags.messageText1, color: '#059669' },
+  { tag: sequenceTags.messageText2, color: '#374151' },
+  { tag: sequenceTags.position, color: '#2563eb' },
+  { tag: sequenceTags.lineComment, color: '#9ca3af', fontStyle: 'italic' },
+  { tag: journeyTags.diagramName, color: '#9333ea', fontWeight: 'bold' },
+  { tag: journeyTags.actor, color: '#1f2937', fontWeight: '500' },
+  { tag: journeyTags.keyword, color: '#dc2626' },
+  { tag: journeyTags.text, color: '#374151' },
+  { tag: journeyTags.score, color: '#2563eb' },
+  { tag: journeyTags.lineComment, color: '#9ca3af', fontStyle: 'italic' },
+  { tag: requirementTags.diagramName, color: '#9333ea', fontWeight: 'bold' },
+  { tag: requirementTags.arrow, color: '#6b7280' },
+  { tag: requirementTags.keyword, color: '#dc2626' },
+  { tag: requirementTags.number, color: '#2563eb' },
+  { tag: requirementTags.quotedString, color: '#059669' },
+  { tag: requirementTags.unquotedString, color: '#374151' },
+  { tag: requirementTags.lineComment, color: '#9ca3af', fontStyle: 'italic' },
+])
+
+const darkHighlightStyle = HighlightStyle.define([
+  { tag: flowchartTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
+  { tag: flowchartTags.nodeId, color: '#f3f4f6', fontWeight: '500' },
+  { tag: flowchartTags.nodeText, color: '#d1d5db' },
+  { tag: flowchartTags.nodeEdge, color: '#9ca3af' },
+  { tag: flowchartTags.nodeEdgeText, color: '#34d399' },
+  { tag: flowchartTags.keyword, color: '#f87171' },
+  { tag: flowchartTags.orientation, color: '#c084fc' },
+  { tag: flowchartTags.string, color: '#34d399' },
+  { tag: flowchartTags.number, color: '#60a5fa' },
+  { tag: flowchartTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: mindmapTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
+  { tag: mindmapTags.lineText1, color: '#d4a574' },
+  { tag: mindmapTags.lineText2, color: '#34d399' },
+  { tag: mindmapTags.lineText3, color: '#f87171' },
+  { tag: mindmapTags.lineText4, color: '#c084fc' },
+  { tag: mindmapTags.lineText5, color: '#60a5fa' },
+  { tag: pieTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
+  { tag: pieTags.title, color: '#f3f4f6', fontWeight: 'bold' },
+  { tag: pieTags.titleText, color: '#d1d5db' },
+  { tag: pieTags.string, color: '#34d399' },
+  { tag: pieTags.number, color: '#60a5fa' },
+  { tag: pieTags.showData, color: '#c084fc' },
+  { tag: pieTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: ganttTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
+  { tag: ganttTags.keyword, color: '#f87171' },
+  { tag: ganttTags.string, color: '#34d399' },
+  { tag: ganttTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: sequenceTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
+  { tag: sequenceTags.arrow, color: '#9ca3af' },
+  { tag: sequenceTags.keyword1, color: '#f87171' },
+  { tag: sequenceTags.keyword2, color: '#c084fc' },
+  { tag: sequenceTags.nodeText, color: '#f3f4f6', fontWeight: '500' },
+  { tag: sequenceTags.messageText1, color: '#34d399' },
+  { tag: sequenceTags.messageText2, color: '#d1d5db' },
+  { tag: sequenceTags.position, color: '#60a5fa' },
+  { tag: sequenceTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: journeyTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
+  { tag: journeyTags.actor, color: '#f3f4f6', fontWeight: '500' },
+  { tag: journeyTags.keyword, color: '#f87171' },
+  { tag: journeyTags.text, color: '#d1d5db' },
+  { tag: journeyTags.score, color: '#60a5fa' },
+  { tag: journeyTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: requirementTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
+  { tag: requirementTags.arrow, color: '#9ca3af' },
+  { tag: requirementTags.keyword, color: '#f87171' },
+  { tag: requirementTags.number, color: '#60a5fa' },
+  { tag: requirementTags.quotedString, color: '#34d399' },
+  { tag: requirementTags.unquotedString, color: '#d1d5db' },
+  { tag: requirementTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+])
 
 const getMermaidTheme = (isDark) => ({
   startOnLoad: false,
@@ -45,6 +161,7 @@ const MermaidTools = () => {
   const [error, setError] = useState('')
   const [splitPos, setSplitPos] = useState(40)
   const [isDragging, setIsDragging] = useState(false)
+  const [isDark, setIsDark] = useState(false)
   const containerRef = useRef(null)
   const renderRef = useRef(null)
 
@@ -58,14 +175,10 @@ const MermaidTools = () => {
   }, [input])
 
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains('dark')
-    mermaid.initialize(getMermaidTheme(isDark))
-  }, [])
-
-  useEffect(() => {
     const observer = new MutationObserver(() => {
-      const isDark = document.documentElement.classList.contains('dark')
-      mermaid.initialize(getMermaidTheme(isDark))
+      const dark = document.documentElement.classList.contains('dark')
+      setIsDark(dark)
+      mermaid.initialize(getMermaidTheme(dark))
       if (input.trim() && renderRef.current) {
         renderMermaid()
       }
@@ -133,16 +246,48 @@ const MermaidTools = () => {
     }
   }, [isDragging])
 
+  const highlightStyle = useMemo(
+    () => (isDark ? darkHighlightStyle : lightHighlightStyle),
+    [isDark],
+  )
+
   return (
     <div className="flex h-full flex-col space-y-4">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Mermaid Tools</h2>
       <div ref={containerRef} className="flex h-[90%] flex-1 gap-0">
         <div className="card h-full" style={{ width: `${splitPos}%` }}>
-          <textarea
+          <CodeMirror
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={setInput}
             placeholder="graph TD\n  A[Start] --> B[End]"
-            className="input-field h-full w-full resize-none font-mono text-sm"
+            className="h-full text-sm"
+            theme={isDark ? 'dark' : 'light'}
+            height="100%"
+            extensions={[codemirrorMermaid(), syntaxHighlighting(highlightStyle)]}
+            basicSetup={{
+              lineNumbers: true,
+              highlightActiveLineGutter: true,
+              highlightSpecialChars: true,
+              foldGutter: true,
+              drawSelection: true,
+              dropCursor: true,
+              allowMultipleSelections: true,
+              indentOnInput: true,
+              bracketMatching: true,
+              closeBrackets: true,
+              autocompletion: true,
+              rectangularSelection: true,
+              crosshairCursor: false,
+              highlightActiveLine: true,
+              highlightSelectionMatches: true,
+              closeBracketsKeymap: true,
+              defaultKeymap: true,
+              searchKeymap: true,
+              historyKeymap: true,
+              foldKeymap: true,
+              completionKeymap: true,
+              lintKeymap: true,
+            }}
           />
         </div>
         <div
