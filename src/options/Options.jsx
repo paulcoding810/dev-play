@@ -1,4 +1,15 @@
-import { Clock, Code, Hash, Link, Lock, Palette, QrCode, Search, Type } from 'lucide-react'
+import {
+  Clock,
+  Code,
+  Hash,
+  Link,
+  Lock,
+  Palette,
+  QrCode,
+  Search,
+  Type,
+  Workflow,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { categories } from '../data/categories'
 import Base64Tool from './components/Base64Tool'
@@ -9,12 +20,14 @@ import QrCodeTool from './components/QrCodeTool'
 import TextTools from './components/TextTools'
 import TimestampTools from './components/TimestampTools'
 import UrlTools from './components/UrlTools'
+import MermaidTools from './components/MermaidTools'
 
 const components = {
   url: { component: UrlTools, icon: Link },
   qrcode: { component: QrCodeTool, icon: QrCode },
   base64: { component: Base64Tool, icon: Lock },
   json: { component: JsonTools, icon: Code },
+  mermaid: { component: MermaidTools, icon: Workflow },
   text: { component: TextTools, icon: Type },
   hash: { component: HashGenerator, icon: Hash },
   timestamp: { component: TimestampTools, icon: Clock },
@@ -54,7 +67,19 @@ export const Options = () => {
     cat.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
 
-  const ActiveComponent = components[activeCategory]?.component
+  const render = () => {
+    const ActiveComponent = components[activeCategory]?.component
+
+    switch (activeCategory) {
+      case 'json':
+      case 'mermaid':
+        return (
+          <div className="mx-auto h-full w-full p-8">{ActiveComponent && <ActiveComponent />}</div>
+        )
+      default:
+        return <div className="mx-auto max-w-4xl p-8">{ActiveComponent && <ActiveComponent />}</div>
+    }
+  }
 
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
@@ -104,11 +129,7 @@ export const Options = () => {
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto">
-        <div className={`mx-auto p-8 ${activeCategory === 'json' ? 'h-full w-full' : 'max-w-4xl'}`}>
-          {ActiveComponent && <ActiveComponent />}
-        </div>
-      </main>
+      <main className="flex-1 overflow-y-auto">{render()}</main>
     </div>
   )
 }
