@@ -43,6 +43,9 @@ const getMermaidTheme = (isDark) => ({
 const MermaidTools = () => {
   const [input, setInput] = useState('')
   const [error, setError] = useState('')
+  const [splitPos, setSplitPos] = useState(40)
+  const [isDragging, setIsDragging] = useState(false)
+  const containerRef = useRef(null)
   const renderRef = useRef(null)
 
   useEffect(() => {
@@ -104,11 +107,36 @@ const MermaidTools = () => {
     URL.revokeObjectURL(url)
   }
 
+  const handleMouseDown = (e) => {
+    e.preventDefault()
+    setIsDragging(true)
+  }
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDragging || !containerRef.current) return
+      const rect = containerRef.current.getBoundingClientRect()
+      const newPos = ((e.clientX - rect.left) / rect.width) * 100
+      setSplitPos(Math.min(Math.max(newPos, 20), 80))
+    }
+
+    const handleMouseUp = () => setIsDragging(false)
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+    }
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [isDragging])
+
   return (
     <div className="flex h-full flex-col space-y-4">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Mermaid Tools</h2>
-      <div className="flex h-[90%] flex-1 gap-4">
-        <div className="card w-2/5 flex-1">
+      <div ref={containerRef} className="flex h-[90%] flex-1 gap-0">
+        <div className="card h-full" style={{ width: `${splitPos}%` }}>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -116,7 +144,16 @@ const MermaidTools = () => {
             className="input-field h-full w-full resize-none font-mono text-sm"
           />
         </div>
-        <div className="card flex w-3/5 flex-1 flex-col overflow-auto">
+        <div
+          className={`w-1 cursor-col-resize bg-gray-200 hover:bg-purple-500 dark:bg-gray-700 dark:hover:bg-purple-600 ${
+            isDragging ? 'bg-purple-500' : ''
+          }`}
+          onMouseDown={handleMouseDown}
+        />
+        <div
+          className="card flex h-full flex-col overflow-auto"
+          style={{ width: `${100 - splitPos}%` }}
+        >
           <div className="mb-2 flex justify-end">
             <button
               onClick={downloadSvg}
