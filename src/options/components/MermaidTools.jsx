@@ -72,7 +72,7 @@ const MermaidTools = () => {
     })
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     return () => observer.disconnect()
-  }, [input])
+  }, [])
 
   const renderMermaid = () => {
     if (!renderRef.current) return
@@ -91,7 +91,8 @@ const MermaidTools = () => {
   }
 
   useEffect(() => {
-    renderMermaid()
+    const timeout = setTimeout(renderMermaid, 300)
+    return () => clearTimeout(timeout)
   }, [input])
 
   const downloadSvg = () => {
@@ -163,11 +164,8 @@ const MermaidTools = () => {
               <Download />
             </button>
           </div>
-          {error ? (
-            <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
-          ) : (
-            <div ref={renderRef} className="mermaid-render" />
-          )}
+          <div ref={renderRef} className="mermaid-render" />
+          {error ? <p className="text-sm text-red-500 dark:text-red-400">{error}</p> : null}
         </div>
       </div>
     </div>
