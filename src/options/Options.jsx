@@ -74,10 +74,16 @@ export const Options = () => {
       case 'json':
       case 'mermaid':
         return (
-          <div className="mx-auto h-full w-full p-8">{ActiveComponent && <ActiveComponent />}</div>
+          <div className="mx-auto h-full w-full p-8">
+            {ActiveComponent && <ActiveComponent isDark={isDark} />}
+          </div>
         )
       default:
-        return <div className="mx-auto max-w-4xl p-8">{ActiveComponent && <ActiveComponent />}</div>
+        return (
+          <div className="mx-auto max-w-4xl p-8">
+            {ActiveComponent && <ActiveComponent isDark={isDark} />}
+          </div>
+        )
     }
   }
 

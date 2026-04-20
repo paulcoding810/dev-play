@@ -71,13 +71,13 @@ const darkHighlightStyle = HighlightStyle.define([
   { tag: flowchartTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
   { tag: flowchartTags.nodeId, color: '#f3f4f6', fontWeight: '500' },
   { tag: flowchartTags.nodeText, color: '#d1d5db' },
-  { tag: flowchartTags.nodeEdge, color: '#9ca3af' },
+  { tag: flowchartTags.nodeEdge, color: '#94a3b8' },
   { tag: flowchartTags.nodeEdgeText, color: '#34d399' },
   { tag: flowchartTags.keyword, color: '#f87171' },
   { tag: flowchartTags.orientation, color: '#c084fc' },
   { tag: flowchartTags.string, color: '#34d399' },
   { tag: flowchartTags.number, color: '#60a5fa' },
-  { tag: flowchartTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: flowchartTags.lineComment, color: '#64748b', fontStyle: 'italic' },
   { tag: mindmapTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
   { tag: mindmapTags.lineText1, color: '#d4a574' },
   { tag: mindmapTags.lineText2, color: '#34d399' },
@@ -90,33 +90,33 @@ const darkHighlightStyle = HighlightStyle.define([
   { tag: pieTags.string, color: '#34d399' },
   { tag: pieTags.number, color: '#60a5fa' },
   { tag: pieTags.showData, color: '#c084fc' },
-  { tag: pieTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: pieTags.lineComment, color: '#64748b', fontStyle: 'italic' },
   { tag: ganttTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
   { tag: ganttTags.keyword, color: '#f87171' },
   { tag: ganttTags.string, color: '#34d399' },
-  { tag: ganttTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: ganttTags.lineComment, color: '#64748b', fontStyle: 'italic' },
   { tag: sequenceTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
-  { tag: sequenceTags.arrow, color: '#9ca3af' },
+  { tag: sequenceTags.arrow, color: '#94a3b8' },
   { tag: sequenceTags.keyword1, color: '#f87171' },
   { tag: sequenceTags.keyword2, color: '#c084fc' },
   { tag: sequenceTags.nodeText, color: '#f3f4f6', fontWeight: '500' },
   { tag: sequenceTags.messageText1, color: '#34d399' },
   { tag: sequenceTags.messageText2, color: '#d1d5db' },
   { tag: sequenceTags.position, color: '#60a5fa' },
-  { tag: sequenceTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: sequenceTags.lineComment, color: '#64748b', fontStyle: 'italic' },
   { tag: journeyTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
   { tag: journeyTags.actor, color: '#f3f4f6', fontWeight: '500' },
   { tag: journeyTags.keyword, color: '#f87171' },
   { tag: journeyTags.text, color: '#d1d5db' },
   { tag: journeyTags.score, color: '#60a5fa' },
-  { tag: journeyTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: journeyTags.lineComment, color: '#64748b', fontStyle: 'italic' },
   { tag: requirementTags.diagramName, color: '#a855f7', fontWeight: 'bold' },
-  { tag: requirementTags.arrow, color: '#9ca3af' },
+  { tag: requirementTags.arrow, color: '#94a3b8' },
   { tag: requirementTags.keyword, color: '#f87171' },
   { tag: requirementTags.number, color: '#60a5fa' },
   { tag: requirementTags.quotedString, color: '#34d399' },
   { tag: requirementTags.unquotedString, color: '#d1d5db' },
-  { tag: requirementTags.lineComment, color: '#6b7280', fontStyle: 'italic' },
+  { tag: requirementTags.lineComment, color: '#64748b', fontStyle: 'italic' },
 ])
 
 const getMermaidTheme = (isDark) => ({
@@ -124,44 +124,45 @@ const getMermaidTheme = (isDark) => ({
   theme: 'base',
   themeVariables: isDark
     ? {
-        primaryColor: '#9333ea',
-        primaryTextColor: '#fff',
-        primaryBorderColor: '#9333ea',
-        lineColor: '#9ca3af',
-        secondaryColor: '#581c87',
-        tertiaryColor: '#1f2937',
-        background: '#111827',
-        mainBkg: '#1f2937',
-        secondBkg: '#374151',
-        border1: '#374151',
-        border2: '#4b5563',
-        arrowheadColor: '#9ca3af',
+        primaryColor: '#c084fc',
+        primaryTextColor: '#ffffff',
+        primaryBorderColor: '#a855f7',
+        lineColor: '#94a3b8',
+        secondaryColor: '#60a5fa',
+        tertiaryColor: '#34d399',
+        background: '#1e293b',
+        mainBkg: '#334155',
+        secondBkg: '#475569',
+        border1: '#475569',
+        border2: '#64748b',
+        arrowheadColor: '#94a3b8',
         fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+        textColor: '#f1f5f9',
       }
     : {
         primaryColor: '#9333ea',
-        primaryTextColor: '#111827',
-        primaryBorderColor: '#9333ea',
+        primaryTextColor: '#000000',
+        primaryBorderColor: '#7c3aed',
         lineColor: '#6b7280',
-        secondaryColor: '#f3e8ff',
-        tertiaryColor: '#faf5ff',
-        background: '#ffffff',
-        mainBkg: '#f9fafb',
-        secondBkg: '#f3e8ff',
-        border1: '#e5e7eb',
-        border2: '#d1d5db',
+        secondaryColor: '#3b82f6',
+        tertiaryColor: '#10b981',
+        background: '#f8fafc',
+        mainBkg: '#ffffff',
+        secondBkg: '#f1f5f9',
+        border1: '#e2e8f0',
+        border2: '#cbd5e1',
         arrowheadColor: '#6b7280',
         fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+        textColor: '#000000',
       },
   securityLevel: 'loose',
 })
 
-const MermaidTools = () => {
+const MermaidTools = ({ isDark }) => {
   const [input, setInput] = useState('')
   const [error, setError] = useState('')
   const [splitPos, setSplitPos] = useState(40)
   const [isDragging, setIsDragging] = useState(false)
-  const [isDark, setIsDark] = useState(false)
   const containerRef = useRef(null)
   const renderRef = useRef(null)
 
@@ -175,17 +176,8 @@ const MermaidTools = () => {
   }, [input])
 
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const dark = document.documentElement.classList.contains('dark')
-      setIsDark(dark)
-      mermaid.initialize(getMermaidTheme(dark))
-      if (input.trim() && renderRef.current) {
-        renderMermaid()
-      }
-    })
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => observer.disconnect()
-  }, [])
+    mermaid.initialize(getMermaidTheme(isDark))
+  }, [isDark])
 
   const renderMermaid = () => {
     if (!renderRef.current) return
@@ -206,7 +198,7 @@ const MermaidTools = () => {
   useEffect(() => {
     const timeout = setTimeout(renderMermaid, 300)
     return () => clearTimeout(timeout)
-  }, [input])
+  }, [input, isDark])
 
   const downloadSvg = () => {
     const svg = renderRef.current?.querySelector('svg')
