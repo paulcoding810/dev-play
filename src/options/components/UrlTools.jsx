@@ -31,14 +31,60 @@ const UrlTools = () => {
       return 'Invalid encoded component'
     }
   }
-  const escapeStr = input ? escape(input) : ''
-  const unescapeStr = () => {
+
+  const getSearchParams = () => {
+    if (!input.trim()) return null
+
+    const value = input.trim()
+
     try {
-      return unescape(input)
+      if (/^[a-z][a-z\d+\-.]*:/i.test(value)) {
+        return new URL(value).searchParams
+      }
+
+      const query = value.includes('?') ? value.slice(value.indexOf('?') + 1) : value
+      return new URLSearchParams(query.replace(/^#/, ''))
     } catch {
-      return 'Invalid escaped string'
+      return null
     }
   }
+
+  const parsedParameters = () => {
+    const params = getSearchParams()
+    if (!params) return input ? 'Invalid URL or parameter string' : ''
+
+    const entries = Array.from(params.entries())
+    if (!entries.length) return input ? 'No parameters found' : ''
+
+    return entries.map(([key, value]) => `${key}: ${value}`).join('\n')
+  }
+
+  const parameterJson = () => {
+    const params = getSearchParams()
+    if (!params) return input ? 'Invalid URL or parameter string' : ''
+
+    const entries = Array.from(params.entries())
+    if (!entries.length) return input ? 'No parameters found' : ''
+
+    const parsed = entries.reduce((result, [key, value]) => {
+      if (!Object.prototype.hasOwnProperty.call(result, key)) {
+        result[key] = value
+      } else if (Array.isArray(result[key])) {
+        result[key].push(value)
+      } else {
+        result[key] = [result[key], value]
+      }
+
+      return result
+    }, {})
+
+    return JSON.stringify(parsed, null, 2)
+  }
+
+  const decodedUri = decodeUri()
+  const decodedUriComponent = decodeUriComponent()
+  const parsedParametersOutput = parsedParameters()
+  const parameterJsonOutput = parameterJson()
 
   return (
     <div className="space-y-6">
@@ -46,13 +92,13 @@ const UrlTools = () => {
         <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-white">URL Tools</h2>
         <div className="space-y-2">
           <label className="label">Enter URL or text</label>
-          <input
-            type="text"
+          <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onFocus={handleFocus}
             autoFocus
             placeholder="https://example.com?foo=bar baz"
+            rows={3}
             className="input-field"
           />
         </div>
@@ -68,23 +114,27 @@ const UrlTools = () => {
         <h3 className="text-lg font-medium text-gray-900 dark:text-white">Decoding</h3>
         <OutputField
           label="decodeURI(input)"
-          value={decodeUri()}
-          isError={decodeUri().includes('Invalid')}
+          value={decodedUri}
+          isError={decodedUri.includes('Invalid encoded')}
         />
         <OutputField
           label="decodeURIComponent(input)"
-          value={decodeUriComponent()}
-          isError={decodeUriComponent().includes('Invalid')}
+          value={decodedUriComponent}
+          isError={decodedUriComponent.includes('Invalid encoded')}
         />
       </div>
 
       <div className="card space-y-4">
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white">Legacy (deprecated)</h3>
-        <OutputField label="escape(input)" value={escapeStr} />
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white">Parameters</h3>
         <OutputField
-          label="unescape(input)"
-          value={unescapeStr()}
-          isError={unescapeStr().includes('Invalid')}
+          label="Parsed parameters"
+          value={parsedParametersOutput}
+          isError={parsedParametersOutput.includes('Invalid URL')}
+        />
+        <OutputField
+          label="Parameters as JSON"
+          value={parameterJsonOutput}
+          isError={parameterJsonOutput.includes('Invalid URL')}
         />
       </div>
     </div>
