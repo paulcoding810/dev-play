@@ -53,32 +53,32 @@ DevPlay
 
 1. Check if your `Node.js` version is >= **14**.
 2. Change or configurate the name of your extension on `src/manifest`.
-3. Run `yarn` to install the dependencies.
+3. Run `pnpm install` to install the dependencies.
 
 ## Developing
 
 ```shell
-$ cd dev-play
-$ yarn dev
+cd dev-play
+pnpm dev
 ```
 
 ### Chrome Extension Developer Mode
 
 1. set your Chrome browser 'Developer mode' up
-2. click 'Load unpacked', and select `dev-play/build` folder
+2. click 'Load unpacked', and select `dev-play/build/chrome` folder
 
 ### Firefox Extension Developer Mode
 
-1. Build your project firstly by running `yarn build:firefox`
+1. Build your project firstly by running `pnpm build:firefox`
 2. Open Firefox and go to `about:debugging#/runtime/this-firefox`
-3. Click on 'Load Temporary Add-on' and select `dev-play/build` folder
+3. Click on 'Load Temporary Add-on' and select `dev-play/build/firefox` folder
 
 ## Packing
 
 ```shell
-$ yarn zip # for chrome
+pnpm zip # for chrome
 or
-$ yarn zip:firefox # for firefox
+pnpm zip:firefox # for firefox
 ```
 
 ---
