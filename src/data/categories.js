@@ -5,8 +5,10 @@ const categories = [
   { id: 'json', name: 'JSON Tools' },
   { id: 'mermaid', name: 'Mermaid Tools' },
   { id: 'text', name: 'Text Tools' },
+  { id: 'regex', name: 'Regex Tester' },
   { id: 'hash', name: 'Hash Generator' },
   { id: 'timestamp', name: 'Timestamp / Date' },
+  { id: 'number', name: 'Hex / Dec / Binary' },
   { id: 'color', name: 'Color Tools' },
 ]
 

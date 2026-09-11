@@ -1,4 +1,5 @@
 import {
+  Binary,
   Clock,
   Code,
   Hash,
@@ -6,6 +7,7 @@ import {
   Lock,
   Palette,
   QrCode,
+  Regex,
   Search,
   Type,
   Workflow,
@@ -16,7 +18,9 @@ import Base64Tool from './components/Base64Tool'
 import ColorTools from './components/ColorTools'
 import HashGenerator from './components/HashGenerator'
 import JsonTools from './components/JsonTools'
+import NumberBaseTools from './components/NumberBaseTools'
 import QrCodeTool from './components/QrCodeTool'
+import RegexTools from './components/RegexTools'
 import TextTools from './components/TextTools'
 import TimestampTools from './components/TimestampTools'
 import UrlTools from './components/UrlTools'
@@ -29,8 +33,10 @@ const components = {
   json: { component: JsonTools, icon: Code },
   mermaid: { component: MermaidTools, icon: Workflow },
   text: { component: TextTools, icon: Type },
+  regex: { component: RegexTools, icon: Regex },
   hash: { component: HashGenerator, icon: Hash },
   timestamp: { component: TimestampTools, icon: Clock },
+  number: { component: NumberBaseTools, icon: Binary },
   color: { component: ColorTools, icon: Palette },
 }
 
