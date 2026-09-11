@@ -16,6 +16,18 @@
     @apply !hidden;
   }
 
+  .jsoneditor .jsoneditor-navigation-bar {
+    @apply relative;
+  }
+
+  .jsoneditor .jsoneditor-navigation-bar .jsoneditor-treepath {
+    @apply pr-20;
+  }
+
+  .jsoneditor .jsoneditor-copy-path {
+    @apply absolute right-1 top-1/2 -translate-y-1/2 cursor-pointer rounded px-2 py-0.5 text-xs font-medium text-purple-700 hover:bg-purple-100;
+  }
+
   .jsoneditor .jsoneditor-field {
     @apply !border-none !text-sm hover:!bg-purple-100 dark:bg-transparent dark:hover:!bg-purple-800;
   }

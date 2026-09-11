@@ -12,6 +12,8 @@ const xmlParser = new XMLParser({
   trimValues: true,
 })
 
+const COPY_LABEL = 'Copy path'
+
 const isXmlInput = (text) => text.startsWith('<')
 
 // migrate the old key, which stored the parsed value instead of the raw text
@@ -100,13 +102,58 @@ const JsonTools = () => {
     if (!treeRef.current || !json) return
 
     treeRef.current.innerHTML = ''
-    new JSONEditor(treeRef.current, {
+    const tree = new JSONEditor(treeRef.current, {
       mode: 'tree',
       mainMenuBar: true,
       navigationBar: true,
       onEditable: () => false,
       onCreateMenu: () => [],
-    }).set(json)
+    })
+    tree.set(json)
+    tree.expandAll()
+
+    const treePath = treeRef.current.querySelector('.jsoneditor-treepath')
+    const navBar = treeRef.current.querySelector('.jsoneditor-navigation-bar')
+    if (!treePath || !navBar) return
+
+    // the first segment is the root node's type, which the nav bar hides
+    const getSegments = () =>
+      Array.from(treePath.querySelectorAll('.jsoneditor-treepath-element')).slice(1)
+
+    let labelTimeout
+    const copyButton = document.createElement('button')
+    copyButton.className = 'jsoneditor-copy-path'
+    copyButton.textContent = COPY_LABEL
+    copyButton.title = 'Copy path to clipboard'
+    copyButton.onclick = () => {
+      const path = getSegments()
+        .map((el) => el.textContent)
+        .join('.')
+      navigator.clipboard.writeText(path).then(() => {
+        copyButton.textContent = 'Copied'
+        clearTimeout(labelTimeout)
+        labelTimeout = setTimeout(() => {
+          copyButton.textContent = COPY_LABEL
+        }, 1200)
+      })
+    }
+    navBar.appendChild(copyButton)
+
+    const syncTreePath = () => {
+      // jsoneditor renders the separator as a ► glyph, which ends up in copied paths
+      treePath.querySelectorAll('.jsoneditor-treepath-seperator').forEach((el) => {
+        if (el.textContent !== '.') el.textContent = '.'
+      })
+      copyButton.style.display = getSegments().length ? '' : 'none'
+    }
+    syncTreePath()
+
+    const observer = new MutationObserver(syncTreePath)
+    observer.observe(treePath, { childList: true })
+    return () => {
+      observer.disconnect()
+      clearTimeout(labelTimeout)
+    }
   }, [json])
 
   useEffect(() => {
