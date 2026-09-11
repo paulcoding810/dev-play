@@ -55,6 +55,13 @@
     @apply text-[16px];
   }
 
+  /* jsoneditor's status bar reports xml as a json parse error */
+  .xml-input .jsoneditor-parse-error-icon,
+  .xml-input .jsoneditor-validation-error-icon,
+  .xml-input .jsoneditor-validation-error-count {
+    @apply !hidden;
+  }
+
   .jsoneditor input[type='text'] {
     @apply h-[22px] !border-none !bg-transparent text-xs;
   }
