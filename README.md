@@ -37,17 +37,19 @@ DevPlay
 
 ## Tools
 
-| Tool      | Description              |
-| --------- | ------------------------ |
-| URL       | URL encode/decode        |
-| QR Code   | Generate QR codes        |
-| Base64    | Encode/decode            |
-| JSON      | Format & validate        |
-| Mermaid   | Diagram and chart        |
-| Text      | Text transformations     |
-| Hash      | Generate MD5, SHA hashes |
-| Timestamp | Convert timestamps       |
-| Color     | Color picker/converter   |
+| Tool               | Description                      |
+| ------------------ | -------------------------------- |
+| URL                | URL encode/decode & parse params |
+| QR Code            | Generate QR codes                |
+| Base64             | Encode/decode                    |
+| JSON               | Format & validate JSON or XML    |
+| Mermaid            | Diagram and chart                |
+| Text               | Text transformations             |
+| Regex              | Test patterns, groups & replace  |
+| Hash               | Generate SHA-1, SHA-256 hashes   |
+| Timestamp          | Convert timestamps               |
+| Hex / Dec / Binary | Convert between number bases     |
+| Color              | Color picker/converter           |
 
 ## Installing
 
