@@ -1,4 +1,4 @@
-import { categories } from '../data/categories'
+import { matchCategories } from '../data/categories'
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason !== 'install') {
@@ -11,14 +11,18 @@ chrome.action.onClicked.addListener(() => {
   chrome.runtime.openOptionsPage()
 })
 
-chrome.omnibox.setDefaultSuggestion({ description: 'Open Dev Play' })
+const DEFAULT_SUGGESTION = 'Open Dev Play'
+
+chrome.omnibox.setDefaultSuggestion({ description: DEFAULT_SUGGESTION })
 chrome.omnibox.onInputChanged.addListener((input, suggest) => {
-  suggest(getMatchingProperties(input))
+  const [best, ...rest] = input.trim() ? matchCategories(input) : []
+  chrome.omnibox.setDefaultSuggestion({
+    description: best ? `Open ${best.name}` : DEFAULT_SUGGESTION,
+  })
+  suggest(rest.map(({ id, name }) => ({ content: id, description: name })))
 })
-chrome.omnibox.onInputEntered.addListener((category, disposition) => {
-  const resolvedCategory = categories[category]
-    ? category
-    : categories.find(({ id }) => id.match(new RegExp(category, 'gi')))?.id
+chrome.omnibox.onInputEntered.addListener((input, disposition) => {
+  const resolvedCategory = input.trim() ? matchCategories(input)[0]?.id : undefined
 
   const url = `${chrome.runtime.getURL('options.html')}?category=${resolvedCategory ?? 'url'}`
 
@@ -34,19 +38,3 @@ chrome.omnibox.onInputEntered.addListener((category, disposition) => {
       break
   }
 })
-
-function getMatchingProperties(input) {
-  const result = []
-  for (const category of categories) {
-    if (category.id.startsWith(input)) {
-      const suggestion = {
-        content: category.id,
-        description: category.name,
-      }
-      result.push(suggestion)
-    } else if (result.length !== 0) {
-      return result
-    }
-  }
-  return result
-}
