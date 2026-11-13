@@ -64,7 +64,7 @@ const RegexTools = () => {
 
     const parts = []
     let cursor = 0
-    matches.forEach((match, index) => {
+    matches.slice(0, MAX_RENDERED_MATCHES).forEach((match, index) => {
       if (match.index > cursor) parts.push(input.slice(cursor, match.index))
       parts.push(
         <mark

@@ -16,6 +16,17 @@ const COPY_LABEL = 'Copy path'
 
 const isXmlInput = (text) => text.startsWith('<')
 
+const IDENTIFIER = /^[A-Za-z_$][\w$]*$/
+
+const formatPath = (path) =>
+  path
+    .map((key, i) => {
+      if (typeof key === 'number') return `[${key}]`
+      if (IDENTIFIER.test(key)) return i === 0 ? key : `.${key}`
+      return `[${JSON.stringify(key)}]`
+    })
+    .join('')
+
 // migrate the old key, which stored the parsed value instead of the raw text
 const loadSavedInput = () => {
   const saved = localStorage.getItem('json-tools-input')
@@ -112,6 +123,14 @@ const JsonTools = () => {
     tree.set(json)
     tree.expandAll()
 
+    // segment text is the raw key, so keep the real path of the selected node
+    let selectedPath = []
+    const updateTreePath = tree._updateTreePath.bind(tree)
+    tree._updateTreePath = (pathNodes) => {
+      selectedPath = pathNodes.at(-1)?.getPath() ?? []
+      updateTreePath(pathNodes)
+    }
+
     const treePath = treeRef.current.querySelector('.jsoneditor-treepath')
     const navBar = treeRef.current.querySelector('.jsoneditor-navigation-bar')
     if (!treePath || !navBar) return
@@ -126,9 +145,7 @@ const JsonTools = () => {
     copyButton.textContent = COPY_LABEL
     copyButton.title = 'Copy path to clipboard'
     copyButton.onclick = () => {
-      const path = getSegments()
-        .map((el) => el.textContent)
-        .join('.')
+      const path = formatPath(selectedPath)
       navigator.clipboard.writeText(path).then(() => {
         copyButton.textContent = 'Copied'
         clearTimeout(labelTimeout)
